@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { TodoService } from './todo.service';
 
 @Controller('todo')
@@ -18,5 +26,15 @@ export class TodoController {
   @Delete(':id')
   deleteTodo(@Param('id') id: string) {
     return this.todoService.deleteTodo(id);
+  }
+
+  @Patch('reorder')
+  async reorderTodos(
+    @Body() reorderData: { sourceIndex: number; destinationIndex: number },
+  ) {
+    return this.todoService.reorderTodos(
+      reorderData.sourceIndex,
+      reorderData.destinationIndex,
+    );
   }
 }

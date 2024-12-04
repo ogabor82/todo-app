@@ -22,4 +22,23 @@ export class TodoService {
   async deleteTodo(id: string): Promise<Todo> {
     return this.prisma.todo.delete({ where: { id: parseInt(id) } });
   }
+
+  async reorderTodos(sourceIndex: number, destinationIndex: number) {
+    const todos = await this.prisma.todo.findMany({
+      orderBy: { order: 'asc' },
+    });
+
+    const [movedItem] = todos.splice(sourceIndex, 1);
+    todos.splice(destinationIndex, 0, movedItem);
+
+    const updates = todos.map((todo, index) => {
+      return this.prisma.todo.update({
+        where: { id: todo.id },
+        data: { order: index },
+      });
+    });
+
+    await Promise.all(updates);
+    return this.prisma.todo.findMany({ orderBy: { order: 'asc' } });
+  }
 }
