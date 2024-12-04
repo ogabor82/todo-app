@@ -37,4 +37,9 @@ export class TodoController {
       reorderData.destinationIndex,
     );
   }
+
+  @Patch(':id/completed')
+  setCompleted(@Param('id') id: string, @Body() body: { completed: boolean }) {
+    return this.todoService.setCompleted(id, body.completed);
+  }
 }

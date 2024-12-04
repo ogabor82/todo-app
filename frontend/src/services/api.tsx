@@ -20,6 +20,14 @@ export const deleteTodo: (id: string) => Promise<Todo> = async (id) => {
   return response.data;
 };
 
+export const setCompleted: (
+  id: string,
+  completed: boolean
+) => Promise<Todo> = async (id, completed) => {
+  const response = await api.patch(`/todo/${id}/completed`, { completed });
+  return response.data;
+};
+
 export const reorderTodos: (
   sourceIndex: number,
   destinationIndex: number

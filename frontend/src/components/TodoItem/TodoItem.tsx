@@ -1,7 +1,7 @@
 import { Todo } from "../../models/todo";
 import { DraggableProvided } from "@hello-pangea/dnd";
 import TrashSimple from "../../assets/TrashSimple.svg";
-import { deleteTodo } from "../../services/api";
+import { deleteTodo, setCompleted } from "../../services/api";
 
 interface TodoItemProps {
   todo: Todo;
@@ -20,6 +20,19 @@ const TodoItem = ({ todo, provided, setTodos, todos }: TodoItemProps) => {
     }
   };
 
+  const handleComplete = async (id: string) => {
+    try {
+      await setCompleted(id, !todo.completed);
+      setTodos(
+        todos.map((t) =>
+          t.id === parseInt(id) ? { ...t, completed: !t.completed } : t
+        )
+      );
+    } catch (error) {
+      console.error("Failed to set completed:", error);
+    }
+  };
+
   return (
     <div
       ref={provided.innerRef}
@@ -27,7 +40,15 @@ const TodoItem = ({ todo, provided, setTodos, todos }: TodoItemProps) => {
       {...provided.dragHandleProps}
       className="flex items-center p-3 mb-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50"
     >
-      <span className="flex-grow">{todo.title}</span>
+      <input
+        type="checkbox"
+        className="cursor-pointer"
+        checked={todo.completed}
+        onChange={() => handleComplete(todo.id.toString())}
+      />
+      <span className={`flex-grow ${todo.completed ? "line-through" : ""}`}>
+        {todo.title}
+      </span>
       <img
         src={TrashSimple}
         alt="Delete todo"

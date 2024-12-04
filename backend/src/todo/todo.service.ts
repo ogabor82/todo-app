@@ -41,4 +41,11 @@ export class TodoService {
     await Promise.all(updates);
     return this.prisma.todo.findMany({ orderBy: { order: 'asc' } });
   }
+
+  async setCompleted(id: string, completed: boolean) {
+    return this.prisma.todo.update({
+      where: { id: parseInt(id) },
+      data: { completed },
+    });
+  }
 }
