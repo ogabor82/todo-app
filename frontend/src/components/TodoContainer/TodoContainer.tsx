@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { Todo } from "../../models/todo";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Droppable } from "@hello-pangea/dnd";
-import axios from "axios";
 import TodoHeader from "../TodoHeader/TodoHeader";
-import { getTodos } from "../../services/api";
+import { getTodos, reorderTodos } from "../../services/api";
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -30,15 +29,9 @@ const TodoContainer = () => {
     setTodos(reorderedItems);
 
     try {
-      const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/todo/reorder`,
-        {
-          sourceIndex,
-          destinationIndex,
-        }
-      );
+      const response = await reorderTodos(sourceIndex, destinationIndex);
 
-      setTodos(response.data);
+      setTodos(response);
     } catch (error) {
       console.error("Failed to reorder todos:", error);
       const response = await getTodos();

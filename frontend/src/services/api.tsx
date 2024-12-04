@@ -14,3 +14,14 @@ export const addTodo: (title: string) => Promise<Todo> = async (title) => {
   const response = await api.post("/todo", { title });
   return response.data;
 };
+
+export const reorderTodos: (
+  sourceIndex: number,
+  destinationIndex: number
+) => Promise<Todo[]> = async (sourceIndex, destinationIndex) => {
+  const response = await api.patch("/todo/reorder", {
+    sourceIndex,
+    destinationIndex,
+  });
+  return response.data;
+};
