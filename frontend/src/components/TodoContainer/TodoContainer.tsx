@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Todo } from "../../models/todo";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Droppable } from "@hello-pangea/dnd";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState("");
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const fetchTodos = async () => {
+    const response = await fetch(`${API_URL}/todo`);
+    const data = await response.json();
+    setTodos(data);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
