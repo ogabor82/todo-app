@@ -3,12 +3,12 @@ import { Todo } from "../../models/todo";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Droppable } from "@hello-pangea/dnd";
 import axios from "axios";
+import TodoHeader from "../TodoHeader/TodoHeader";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTodo, setNewTodo] = useState("");
 
   useEffect(() => {
     fetchTodos();
@@ -18,16 +18,6 @@ const TodoContainer = () => {
     const response = await fetch(`${API_URL}/todo`);
     const data = await response.json();
     setTodos(data);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!newTodo.trim()) return;
-    setTodos([
-      ...todos,
-      { id: Date.now(), title: newTodo, completed: false, order: todos.length },
-    ]);
-    setNewTodo("");
   };
 
   const handleDragEnd = async (result: DropResult) => {
@@ -60,15 +50,7 @@ const TodoContainer = () => {
 
   return (
     <div className="flex flex-col gap-4 border-2 border-gray-500 rounded-md p-4">
-      <h1>Todo List</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Add a new todo..."
-        />
-      </form>
+      <TodoHeader todos={todos} setTodos={setTodos} />
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="todos">
