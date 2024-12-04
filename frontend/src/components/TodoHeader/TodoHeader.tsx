@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Todo } from "../../models/todo";
-import axios from "axios";
+import { addTodo } from "../../services/api";
+
 const TodoHeader = ({
   setTodos,
   todos,
@@ -15,18 +16,15 @@ const TodoHeader = ({
     if (!newTodo.trim()) return;
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/todo`,
-        { title: newTodo }
-      );
+      const todoResponse = await addTodo(newTodo);
 
       setTodos([
         ...todos,
         {
-          id: response.data.id,
-          title: response.data.title,
-          completed: response.data.completed,
-          order: response.data.order,
+          id: todoResponse.id,
+          title: todoResponse.title,
+          completed: todoResponse.completed,
+          order: todoResponse.order,
         },
       ]);
     } catch (error) {

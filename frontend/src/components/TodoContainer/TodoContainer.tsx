@@ -4,8 +4,7 @@ import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Droppable } from "@hello-pangea/dnd";
 import axios from "axios";
 import TodoHeader from "../TodoHeader/TodoHeader";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { getTodos } from "../../services/api";
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -15,8 +14,7 @@ const TodoContainer = () => {
   }, []);
 
   const fetchTodos = async () => {
-    const response = await fetch(`${API_URL}/todo`);
-    const data = await response.json();
+    const data = await getTodos();
     setTodos(data);
   };
 
@@ -43,8 +41,8 @@ const TodoContainer = () => {
       setTodos(response.data);
     } catch (error) {
       console.error("Failed to reorder todos:", error);
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/todos`);
-      setTodos(response.data);
+      const response = await getTodos();
+      setTodos(response);
     }
   };
 
