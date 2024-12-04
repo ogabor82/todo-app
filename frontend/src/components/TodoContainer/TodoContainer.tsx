@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Todo } from "../../models/todo";
+import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
+import { Droppable } from "@hello-pangea/dnd";
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -15,6 +17,16 @@ const TodoContainer = () => {
     setNewTodo("");
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const items = Array.from(todos);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setTodos(items);
+  };
+
   return (
     <div className="flex flex-col gap-4 border-2 border-gray-500 rounded-md p-4">
       <h1>Todo List</h1>
@@ -26,11 +38,33 @@ const TodoContainer = () => {
           placeholder="Add a new todo..."
         />
       </form>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
-        ))}
-      </ul>
+
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="todos">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {todos.map((todo, index) => (
+                <Draggable
+                  key={todo.id}
+                  draggableId={todo.id.toString()}
+                  index={index}
+                >
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      {todo.title}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };
