@@ -4,6 +4,7 @@ import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Droppable } from "@hello-pangea/dnd";
 import TodoHeader from "../TodoHeader/TodoHeader";
 import { getTodos, reorderTodos } from "../../services/api";
+import TodoItem from "../TodoItem/TodoItem";
 
 const TodoContainer = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -53,15 +54,7 @@ const TodoContainer = () => {
                   draggableId={todo.id.toString()}
                   index={index}
                 >
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      {todo.title}
-                    </div>
-                  )}
+                  {(provided) => <TodoItem todo={todo} provided={provided} />}
                 </Draggable>
               ))}
               {provided.placeholder}
