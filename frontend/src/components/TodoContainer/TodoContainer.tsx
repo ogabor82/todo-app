@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Todo } from "../../models/todo";
 import { DragDropContext, Draggable, DropResult } from "@hello-pangea/dnd";
 import { Droppable } from "@hello-pangea/dnd";
+import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,14 +30,32 @@ const TodoContainer = () => {
     setNewTodo("");
   };
 
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
 
-    const items = Array.from(todos);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
 
-    setTodos(items);
+    const reorderedItems = Array.from(todos);
+    const [reorderedItem] = reorderedItems.splice(sourceIndex, 1);
+    reorderedItems.splice(destinationIndex, 0, reorderedItem);
+    setTodos(reorderedItems);
+
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/todo/reorder`,
+        {
+          sourceIndex,
+          destinationIndex,
+        }
+      );
+
+      setTodos(response.data);
+    } catch (error) {
+      console.error("Failed to reorder todos:", error);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/todos`);
+      setTodos(response.data);
+    }
   };
 
   return (
