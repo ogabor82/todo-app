@@ -41,7 +41,7 @@ const TodoContainer = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 border-2 border-gray-500 rounded-md p-16 w-full lg:max-w-md mx-auto bg-white">
+    <div className="flex flex-col gap-4 border-2 border-gray-500 rounded-md p-8 lg:p-16 w-full lg:max-w-md mx-auto bg-white">
       <TodoHeader todos={todos} setTodos={setTodos} />
 
       <DragDropContext onDragEnd={handleDragEnd}>
