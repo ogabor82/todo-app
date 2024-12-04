@@ -18,4 +18,8 @@ export class TodoService {
       data: { title, order: lastTodo?.order + 1 || 0 },
     });
   }
+
+  async deleteTodo(id: string): Promise<Todo> {
+    return this.prisma.todo.delete({ where: { id: parseInt(id) } });
+  }
 }
