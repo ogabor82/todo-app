@@ -11,8 +11,7 @@ const TodoHeader = ({
 }) => {
   const [newTodo, setNewTodo] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const createTodo = async () => {
     if (!newTodo.trim()) return;
 
     try {
@@ -34,18 +33,33 @@ const TodoHeader = ({
     setNewTodo("");
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createTodo();
+  };
+
   return (
     <>
-      <h1 className="text-2xl font-bold">Tasks</h1>
-      <p className="text-sm text-gray-500">New task:</p>
-      <form onSubmit={handleSubmit}>
-        <input
-          className="border-b border-gray-500 focus:outline-none text-center"
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-        />
-      </form>
+      <div className="flex flex-row justify-between items-center gap-2">
+        <h1 className="text-6xl font-bold">Tasks</h1>
+        <button
+          className="cursor-pointer bg-gray-200 rounded-md p-4"
+          onClick={createTodo}
+        >
+          <span className="text-2xl">🚀</span>
+        </button>
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="text-sm text-gray-500 font-bold">New task:</p>
+        <form onSubmit={handleSubmit}>
+          <input
+            className="border-b border-gray-200 w-full focus:outline-none text-center"
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+          />
+        </form>
+      </div>
     </>
   );
 };
