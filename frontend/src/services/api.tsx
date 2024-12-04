@@ -15,6 +15,11 @@ export const addTodo: (title: string) => Promise<Todo> = async (title) => {
   return response.data;
 };
 
+export const deleteTodo: (id: string) => Promise<Todo> = async (id) => {
+  const response = await api.delete(`/todo/${id}`);
+  return response.data;
+};
+
 export const reorderTodos: (
   sourceIndex: number,
   destinationIndex: number

@@ -54,7 +54,14 @@ const TodoContainer = () => {
                   draggableId={todo.id.toString()}
                   index={index}
                 >
-                  {(provided) => <TodoItem todo={todo} provided={provided} />}
+                  {(provided) => (
+                    <TodoItem
+                      todo={todo}
+                      provided={provided}
+                      setTodos={setTodos}
+                      todos={todos}
+                    />
+                  )}
                 </Draggable>
               ))}
               {provided.placeholder}
