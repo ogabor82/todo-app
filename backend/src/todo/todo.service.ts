@@ -7,7 +7,7 @@ export class TodoService {
   constructor(private prisma: PrismaService) {}
 
   async getTodos(): Promise<Todo[]> {
-    return this.prisma.todo.findMany();
+    return this.prisma.todo.findMany({ orderBy: { order: 'asc' } });
   }
 
   async createTodo(title: string): Promise<Todo> {
