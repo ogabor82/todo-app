@@ -38,17 +38,19 @@ const TodoItem = ({ todo, provided, setTodos, todos }: TodoItemProps) => {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      className="flex items-center p-3 mb-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50"
+      className="flex justify-between items-center p-3 mb-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50"
     >
-      <input
-        type="checkbox"
-        className="cursor-pointer"
-        checked={todo.completed}
-        onChange={() => handleComplete(todo.id.toString())}
-      />
-      <span className={`flex-grow ${todo.completed ? "line-through" : ""}`}>
-        {todo.title}
-      </span>
+      <div>
+        <input
+          type="checkbox"
+          className="cursor-pointer"
+          checked={todo.completed}
+          onChange={() => handleComplete(todo.id.toString())}
+        />
+        <span className={`pl-4 ${todo.completed ? "line-through" : ""}`}>
+          {todo.title}
+        </span>
+      </div>
       <img
         src={TrashSimple}
         alt="Delete todo"
