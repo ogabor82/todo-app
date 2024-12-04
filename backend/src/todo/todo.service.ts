@@ -11,6 +11,11 @@ export class TodoService {
   }
 
   async createTodo(title: string): Promise<Todo> {
-    return this.prisma.todo.create({ data: { title, order: 0 } });
+    const lastTodo = await this.prisma.todo.findFirst({
+      orderBy: { order: 'desc' },
+    });
+    return this.prisma.todo.create({
+      data: { title, order: lastTodo?.order + 1 || 0 },
+    });
   }
 }
