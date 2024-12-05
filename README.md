@@ -51,7 +51,6 @@ cp .env.example .env
 
 ```bash
 npx prisma migrate dev
-npx prisma db seed
 ```
 
 5. Start the backend server

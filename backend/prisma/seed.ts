@@ -8,6 +8,9 @@ async function main() {
       { title: 'Here’s a task item 1', completed: false, order: 1 },
       { title: 'Here’s a task item 2', completed: false, order: 2 },
       { title: 'Here’s a task item 3', completed: false, order: 3 },
+      { title: 'Here’s a task item 4', completed: false, order: 4 },
+      { title: 'Here’s a task item 5', completed: false, order: 5 },
+      { title: 'Here’s a task item 6', completed: false, order: 6 },
     ],
   });
 }
