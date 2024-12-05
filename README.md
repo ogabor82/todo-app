@@ -1,4 +1,4 @@
-# Todo List App
+# Todo List App 🚀
 
 A simple Todo application with a React frontend, NestJS backend, Prisma ORM, and SQLite database.
 
@@ -61,3 +61,32 @@ npm run start:dev
 ```
 
 You can now access the Swagger UI at http://localhost:3000/api and test the API endpoints.
+
+### Frontend
+
+1. Navigate to the frontend directory
+
+```bash
+cd ..
+cd frontend
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Copy the `.env.local.example` file to `.env.local` and set the environment variables
+
+```bash
+cp .env.local.example .env.local
+```
+
+4. Start the frontend server
+
+```bash
+npm run dev
+```
+
+You can now access the application at http://localhost:5173.
