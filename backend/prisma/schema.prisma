@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./todoapp.db"
+  url      = env("DATABASE_URL")
 }
 
 model Todo {
