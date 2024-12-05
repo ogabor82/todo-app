@@ -24,7 +24,7 @@ export const setCompleted: (
   id: string,
   completed: boolean
 ) => Promise<Todo> = async (id, completed) => {
-  const response = await api.patch(`/todo/${id}/completed`, { completed });
+  const response = await api.patch(`/todo/${id}`, { completed });
   return response.data;
 };
 
@@ -32,7 +32,7 @@ export const reorderTodos: (
   sourceIndex: number,
   destinationIndex: number
 ) => Promise<Todo[]> = async (sourceIndex, destinationIndex) => {
-  const response = await api.patch("/todo/reorder", {
+  const response = await api.patch("/todo/order", {
     sourceIndex,
     destinationIndex,
   });

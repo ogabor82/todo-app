@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Todo } from '@prisma/client';
 
@@ -23,7 +23,7 @@ export class TodoService {
     return this.prisma.todo.delete({ where: { id: parseInt(id) } });
   }
 
-  async reorderTodos(sourceIndex: number, destinationIndex: number) {
+  async orderTodos(sourceIndex: number, destinationIndex: number) {
     const todos = await this.prisma.todo.findMany({
       orderBy: { order: 'asc' },
     });
@@ -42,10 +42,25 @@ export class TodoService {
     return this.prisma.todo.findMany({ orderBy: { order: 'asc' } });
   }
 
-  async setCompleted(id: string, completed: boolean) {
+  async modifyTodo(id: string, title?: string, completed?: boolean) {
+    const todo = await this.prisma.todo.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!todo) {
+      throw new HttpException(
+        `Todo with id ${id} not found`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    const updateData: { title?: string; completed?: boolean } = {};
+    if (title !== undefined) updateData.title = title;
+    if (completed !== undefined) updateData.completed = completed;
+
     return this.prisma.todo.update({
       where: { id: parseInt(id) },
-      data: { completed },
+      data: updateData,
     });
   }
 }

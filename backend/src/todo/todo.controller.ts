@@ -28,18 +28,21 @@ export class TodoController {
     return this.todoService.deleteTodo(id);
   }
 
-  @Patch('reorder')
-  async reorderTodos(
+  @Patch('order')
+  async orderTodos(
     @Body() reorderData: { sourceIndex: number; destinationIndex: number },
   ) {
-    return this.todoService.reorderTodos(
+    return this.todoService.orderTodos(
       reorderData.sourceIndex,
       reorderData.destinationIndex,
     );
   }
 
-  @Patch(':id/completed')
-  setCompleted(@Param('id') id: string, @Body() body: { completed: boolean }) {
-    return this.todoService.setCompleted(id, body.completed);
+  @Patch(':id')
+  modifyTodo(
+    @Param('id') id: string,
+    @Body() body: { title?: string; completed?: boolean },
+  ) {
+    return this.todoService.modifyTodo(id, body.title, body.completed);
   }
 }
